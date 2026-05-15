@@ -1,0 +1,2295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARN Computer Solution | Computer Services & Sales</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #f97316;  /* Orange */
+            --secondary: #ea580c; /* Darker Orange */
+            --accent: #000000;    /* Black */
+            --dark: #1c1917;      /* Dark Gray */
+            --light: #fff7ed;     /* Light Orange Background */
+        }
+        
+        body {
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+        
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 2rem;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            max-width: 1200px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            border: 3px solid var(--primary);
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h2 {
+            font-size: 1.8rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        
+        .close-modal:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .modal-body {
+            padding: 2rem;
+        }
+        
+        /* Repair Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .gallery-item {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(249,115,22,0.1);
+            transition: all 0.3s;
+            border: 1px solid #fed7aa;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(249,115,22,0.2);
+        }
+        
+        .gallery-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary);
+        }
+        
+        .gallery-info {
+            padding: 1.5rem;
+        }
+        
+        .gallery-title {
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .gallery-description {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .repair-stats {
+            display: flex;
+            justify-content: space-around;
+            background: #ffedd5;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            border: 1px solid #fed7aa;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--accent);
+        }
+        
+        .service-details {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #ffedd5;
+            border-radius: 10px;
+            border: 1px solid #fed7aa;
+        }
+        
+        /* Tabs Navigation */
+        .tabs-container {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: white;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .tabs {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow-x: auto;
+        }
+        
+        .tab-btn {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark);
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab-btn:hover {
+            background: #fed7aa;
+        }
+        
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: #ffedd5;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Common Styles for Both Tabs */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header-tagline {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+        
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+        }
+        
+        /* Logo Styles - Orange & Black */
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-decoration: none;
+        }
+        
+        .logo-main {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: 1px;
+            line-height: 1;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .logo-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 3px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .logo-text::before {
+            content: "⚡";
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .logo-text::after {
+            content: "⚡";
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .logo-icon {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-right: 5px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95)), 
+                        url('https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1200');
+            background-size: cover;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(249,115,22,0.1);
+            border: 2px solid var(--primary);
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .hero-tagline {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 2rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(249,115,22,0.2);
+        }
+        
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(249,115,22,0.3);
+        }
+        
+        .btn-whatsapp {
+            background: #25D366;
+            box-shadow: 0 4px 6px rgba(37,211,102,0.2);
+        }
+        
+        .btn-whatsapp:hover {
+            background: #128C7E;
+            box-shadow: 0 8px 15px rgba(37,211,102,0.3);
+        }
+        
+        .btn-call {
+            background: var(--accent);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        
+        .btn-call:hover {
+            background: #333;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+        }
+        
+        .btn-sales {
+            background: #ea580c;
+            box-shadow: 0 4px 6px rgba(234,88,12,0.2);
+        }
+        
+        .btn-sales:hover {
+            background: #c2410c;
+            box-shadow: 0 8px 15px rgba(234,88,12,0.3);
+        }
+        
+        .btn-view-photos {
+            background: #000000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        
+        .btn-view-photos:hover {
+            background: #333;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+        }
+        
+        /* Services Section */
+        .services-section {
+            margin: 4rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .service-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(249,115,22,0.08);
+            transition: all 0.3s;
+            border-left: 5px solid var(--primary);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            border: 1px solid #fed7aa;
+            cursor: pointer;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(249,115,22,0.15);
+            border-color: var(--primary);
+        }
+        
+        .service-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .service-title {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .service-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        
+        .service-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed #fed7aa;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .service-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .service-list i {
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+        
+        /* Value Services */
+        .value-services {
+            background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
+            padding: 3rem;
+            border-radius: 15px;
+            margin: 3rem 0;
+            border: 2px solid var(--primary);
+        }
+        
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .value-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(249,115,22,0.05);
+            border: 1px solid #fed7aa;
+        }
+        
+        .value-item i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(249,115,22,0.1);
+            margin: 3rem 0;
+            border: 2px solid var(--primary);
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        
+        .contact-info {
+            padding: 2rem;
+            background: #ffedd5;
+            border-radius: 10px;
+            border: 1px solid #fed7aa;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(249,115,22,0.05);
+            border: 1px solid #fed7aa;
+        }
+        
+        .contact-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            width: 50px;
+            height: 50px;
+            background: #ffedd5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .whatsapp-icon {
+            color: #25D366;
+            background: #dcf8c6;
+        }
+        
+        .phone-icon {
+            color: var(--primary);
+            background: #ffedd5;
+        }
+        
+        .contact-form {
+            padding: 2rem;
+            background: #ffedd5;
+            border-radius: 10px;
+            border: 1px solid #fed7aa;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #fed7aa;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            background: white;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
+        }
+        
+        footer {
+            background: var(--accent);
+            color: white;
+            padding: 3rem 1rem;
+            margin-top: 4rem;
+            border-top: 5px solid var(--primary);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #374151;
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+            
+            .logo-main {
+                font-size: 1.8rem;
+            }
+            
+            .logo-text {
+                font-size: 0.9rem;
+            }
+            
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-tagline {
+                font-size: 1.2rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-section,
+            .value-services {
+                padding: 2rem 1rem;
+            }
+            
+            .tabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+            
+            .tab-btn {
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .repair-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+        
+        .badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .emergency-badge {
+            background: #dc2626;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        /* Logo Banner */
+        .logo-banner {
+            background: linear-gradient(135deg, #ffedd5 0%, white 100%);
+            padding: 3rem 1rem;
+            text-align: center;
+            margin: 2rem auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(249,115,22,0.1);
+            max-width: 800px;
+            border: 3px solid var(--primary);
+        }
+        
+        .logo-banner-main {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: 3px;
+            line-height: 1;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .logo-banner-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            position: relative;
+            display: inline-block;
+            padding: 0 1rem;
+        }
+        
+        .logo-banner-text::before,
+        .logo-banner-text::after {
+            content: "🔥";
+            color: var(--primary);
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+        }
+        
+        .logo-banner-text::before {
+            left: -10px;
+        }
+        
+        .logo-banner-text::after {
+            right: -10px;
+        }
+        
+        .logo-banner-tagline {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .view-all {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        /* Sales Page Specific Styles */
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .category-btn {
+            padding: 0.8rem 1.5rem;
+            background: white;
+            border: 2px solid #fed7aa;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: var(--accent);
+        }
+        
+        .category-btn.active,
+        .category-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(249,115,22,0.08);
+            transition: all 0.3s;
+            border: 1px solid #fed7aa;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(249,115,22,0.15);
+            border-color: var(--primary);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary);
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-category {
+            display: inline-block;
+            background: #ffedd5;
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+        
+        .product-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+        
+        .product-description {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            min-height: 60px;
+        }
+        
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .product-features {
+            list-style: none;
+            margin: 1rem 0;
+        }
+        
+        .product-features li {
+            padding: 0.3rem 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .product-features i {
+            color: var(--primary);
+            font-size: 0.8rem;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .stock-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .warranty-badge {
+            background: var(--accent);
+        }
+        
+        .hot-deal {
+            background: #dc2626;
+            animation: pulse 1.5s infinite;
+        }
+        
+        /* Page header for sales */
+        .page-header {
+            text-align: center;
+            margin: 2rem 0 3rem 0;
+        }
+        
+        .page-title {
+            font-size: 2.8rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .sales-contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .sales-contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: #ffedd5;
+            border-radius: 10px;
+            min-width: 200px;
+            border: 1px solid #fed7aa;
+        }
+        
+        .sales-contact-icon {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .specs-table td {
+            padding: 0.5rem;
+            border-bottom: 1px solid #fed7aa;
+        }
+        
+        .specs-table td:first-child {
+            font-weight: 600;
+            color: var(--accent);
+            width: 40%;
+        }
+        
+        /* Orange theme specific animations */
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(249,115,22,0.5); }
+            50% { box-shadow: 0 0 20px rgba(249,115,22,0.8); }
+            100% { box-shadow: 0 0 5px rgba(249,115,22,0.5); }
+        }
+        
+        .glow-effect {
+            animation: glow 3s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Repair Photos Modal -->
+    <div class="modal-overlay" id="repairModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-tools"></i> Repair & Maintenance Gallery</h2>
+                <button class="close-modal" onclick="closeRepairModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="repair-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">1000+</span>
+                        <span class="stat-label">Repairs Done</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">98%</span>
+                        <span class="stat-label">Success Rate</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Support</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">1 Hour</span>
+                        <span class="stat-label">Response Time</span>
+                    </div>
+                </div>
+                
+                <h3 style="color: var(--primary); margin-bottom: 1rem;">Our Repair Services Gallery</h3>
+                <p style="margin-bottom: 2rem; color: #666;">See our expert technicians in action! We provide professional repair services for all types of computers and laptops.</p>
+                
+                <div class="gallery-grid">
+                    <!-- Laptop Repair Photos -->
+                    <div class="gallery-item">
+                        <div class="gallery-image">
+                            <i class="fas fa-laptop-medical"></i>
+                        </div>
+                        <div class="gallery-info">
+                            <h4 class="gallery-title">Laptop Screen Replacement</h4>
+                            <p class="gallery-description">Professional laptop screen replacement with genuine parts. We handle all brands - HP, Dell, Lenovo, Asus, Acer, etc.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-image">
+                            <i class="fas fa-keyboard"></i>
+                        </div>
+                        <div class="gallery-info">
+                            <h4 class="gallery-title">Keyboard Replacement</h4>
+                            <p class="gallery-description">Expert keyboard replacement for laptops. Spilled water or broken keys? We fix it with original or compatible parts.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item">
+                        <div class="gallery-image">
+                            <i class="fas fa-battery-full"></i>
+                        </div>
+                        <div class="gallery-info">
+                            <h4 class="gallery-title">Battery Replacement</h4>
+                            <p class="gallery-description">Laptop battery not holding charge? We replace with high-quality batteries with 1-year warranty.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Motherboard Repair -->
+                    <div class="gallery-item">
+                        <img src="images/laptop-repair.jpg" class="gallery-image" alt="Laptop Repair">
+                        <div class="gallery-info">
+                            <h4 class="gallery-title">Motherboard Repair</h4>
+                            <p class="gallery-description">Expert motherboard-level repairs including chip-level repair, soldering, and component replacement.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- RAM & SSD Upgrade -->
+                    <div class="gallery-item">
+                        <div class="gallery-image">
+                            <i class="fas fa-memory"></i>
+                        </div>
+                        <div class="gallery-info">
+                            <h4 class="gallery-title">RAM & SSD Upgrade</h4>
+                            <p class="gallery-description">Speed up your computer with RAM and SSD upgrades. We install and transfer data professionally.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Formatting & Software -->
+                    <div class="gallery-item">
+                        <div class="gallery-image">
+                            <i class="fas fa-desktop"></i>
+                        </div>
+                        <div class="gallery-info">
+                            <h4 class="gallery-title">Formatting & Software</h4>
+                            <p class="gallery-description">Windows installation, driver updates, software setup, and data backup before formatting.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Virus Removal -->
+                    <div class="gallery-item">
+                        <div class="gallery-image">
+                            <i class="fas fa-shield-virus"></i>
+                        </div>
+                        <div class="gallery-info">
+                            <h4 class="gallery-title">Virus Removal</h4>
+                            <p class="gallery-description">Complete virus/malware removal with system optimization for better performance.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Data Recovery -->
+                    <div class="gallery-item">
+                        <div class="gallery-image">
+                            <i class="fas fa-hdd"></i>
+                        </div>
+                        <div class="gallery-info">
+                            <h4 class="gallery-title">Data Recovery</h4>
+                            <p class="gallery-description">Professional data recovery from crashed hard drives, formatted drives, and corrupted storage.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Cooling System -->
+                    <div class="gallery-item">
+                        <div class="gallery-image">
+                            <i class="fas fa-wind"></i>
+                        </div>
+                        <div class="gallery-info">
+                            <h4 class="gallery-title">Cooling System Repair</h4>
+                            <p class="gallery-description">Laptop overheating? We clean fans, replace thermal paste, and fix cooling systems.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="service-details">
+                    <h4 style="color: var(--primary); margin-bottom: 1rem;">Why Choose Our Repair Services?</h4>
+                    <ul style="color: #666; line-height: 1.8;">
+                        <li><strong>Expert Technicians:</strong> Certified professionals with 5+ years experience</li>
+                        <li><strong>Genuine Parts:</strong> We use original or high-quality compatible parts</li>
+                        <li><strong>Same Day Service:</strong> Most repairs completed within 2-4 hours</li>
+                        <li><strong>Warranty:</strong> 3-6 months warranty on all repairs</li>
+                        <li><strong>Transparent Pricing:</strong> No hidden charges - price quoted before repair</li>
+                        <li><strong>Free Diagnosis:</strong> We diagnose the problem for free</li>
+                        <li><strong>Home/Office Service:</strong> We come to your location</li>
+                        <li><strong>Data Security:</strong> Your data is safe with us - we maintain confidentiality</li>
+                    </ul>
+                    
+                    <div style="margin-top: 2rem; text-align: center;">
+                        <a href="tel:+917387210710" class="btn btn-call" style="margin-right: 1rem;">
+                            <i class="fas fa-phone-alt"></i> Call for Repair: 7387210710
+                        </a>
+                        <a href="https://wa.me/917387210710?text=Hi! I need computer repair service. Please help." target="_blank" class="btn btn-whatsapp">
+                            <i class="fab fa-whatsapp"></i> WhatsApp for Repair
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs-container">
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="services">
+                <i class="fas fa-tools"></i> Services
+            </button>
+            <button class="tab-btn" data-tab="sales">
+                <i class="fas fa-shopping-cart"></i> Sales & Accessories
+            </button>
+        </div>
+    </div>
+
+    <!-- Services Tab -->
+    <div id="services" class="tab-content active">
+        <header class="header">
+            <h1>ARN Computer Solution</h1>
+            <p class="header-tagline">Your Trusted Computer & IT Service Partner</p>
+        </header>
+        
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="#" class="logo-container">
+                    <div class="logo-main">ARN</div>
+                    <div class="logo-text">
+                        <i class="fas fa-laptop-code logo-icon"></i>
+                        COMPUTER SOLUTION
+                    </div>
+                </a>
+                <div class="nav-links">
+                    <a href="#home-services">Home</a>
+                    <a href="#services-section">Services</a>
+                    <a href="#gaming-section">Gaming PC</a>
+                    <a href="#cctv-section">CCTV & Network</a>
+                    <a href="#" onclick="switchTab('sales')">Sales & Accessories</a>
+                    <a href="#contact-section">Contact</a>
+                </div>
+            </div>
+        </nav>
+        
+        <main class="container">
+            <!-- Logo Banner -->
+            <div class="logo-banner glow-effect">
+                <div class="logo-banner-main">ARN</div>
+                <div class="logo-banner-text">COMPUTER SOLUTION</div>
+                <p class="logo-banner-tagline">Expert IT Services & Solutions Since 2024</p>
+            </div>
+            
+            <section id="home-services" class="hero">
+                <h2>Expert Computer Services at Your Doorstep</h2>
+                <p class="hero-tagline">Professional repair, maintenance, and IT solutions for home and business</p>
+                
+                <div class="cta-buttons">
+                    <a href="tel:+917387210710" class="btn btn-call">
+                        <i class="fas fa-phone-alt"></i> Call Now: 7387210710
+                    </a>
+                    <a href="https://wa.me/917387210710" target="_blank" class="btn btn-whatsapp">
+                        <i class="fab fa-whatsapp"></i> WhatsApp: 8766935124
+                    </a>
+                    <a href="#" onclick="switchTab('sales')" class="btn btn-sales">
+                        <i class="fas fa-shopping-cart"></i> View Products
+                    </a>
+                </div>
+            </section>
+            
+            <!-- Computer & Laptop Services -->
+            <section id="services-section" class="services-section">
+                <h2 class="section-title">💻 Computer & Laptop Services</h2>
+                <div class="services-grid">
+                    <div class="service-card" onclick="openRepairModal()">
+                        <div class="service-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3 class="service-title">Repair & Maintenance <span class="badge">View Photos</span></h3>
+                        <ul class="service-list">
+                            <li><i class="fas fa-check-circle"></i> Laptop / Desktop Repair</li>
+                            <li><i class="fas fa-check-circle"></i> Windows / Software Installation</li>
+                            <li><i class="fas fa-check-circle"></i> Virus Removal & System Speed Optimization</li>
+                            <li><i class="fas fa-check-circle"></i> Format & Data Backup</li>
+                            <li><i class="fas fa-check-circle"></i> Laptop Screen, Keyboard, Battery Replacement</li>
+                            <li><i class="fas fa-check-circle"></i> Motherboard Repair</li>
+                            <li><i class="fas fa-check-circle"></i> RAM / SSD Upgrade</li>
+                        </ul>
+                        <div class="view-all">
+                            <button class="btn btn-view-photos" style="padding: 0.5rem 1.5rem; font-size: 0.9rem;">
+                                <i class="fas fa-images"></i> View Repair Photos
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <a href="#" onclick="switchTab('sales')" class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3 class="service-title">🖥️ Sales & Accessories</h3>
+                        <ul class="service-list">
+                            <li><i class="fas fa-check-circle"></i> New & Refurbished Laptop / Computer Sale</li>
+                            <li><i class="fas fa-check-circle"></i> Printer, Keyboard, Mouse, UPS</li>
+                            <li><i class="fas fa-check-circle"></i> Router, WiFi Device, LAN Cable</li>
+                            <li><i class="fas fa-check-circle"></i> CCTV Camera Sale</li>
+                            <li><i class="fas fa-check-circle"></i> All Computer Accessories Available</li>
+                        </ul>
+                        <div class="view-all">
+                            <span class="btn" style="padding: 0.5rem 1.5rem; font-size: 0.9rem;">
+                                <i class="fas fa-external-link-alt"></i> View All Products
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            </section>
+            
+            <!-- Gaming PC Services -->
+            <section id="gaming-section" class="services-section">
+                <h2 class="section-title">🎮 Gaming PC Services</h2>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h3 class="service-title">Gaming Solutions</h3>
+                        <ul class="service-list">
+                            <li><i class="fas fa-check-circle"></i> Custom Gaming PC Assembly</li>
+                            <li><i class="fas fa-check-circle"></i> Graphics Card / RAM Upgrade</li>
+                            <li><i class="fas fa-check-circle"></i> Advanced Cooling Setup</li>
+                            <li><i class="fas fa-check-circle"></i> Performance Tuning & Optimization</li>
+                            <li><i class="fas fa-check-circle"></i> RGB Lighting Setup</li>
+                            <li><i class="fas fa-check-circle"></i> Gaming Peripherals Setup</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- CCTV & Networking -->
+            <section id="cctv-section" class="services-section">
+                <h2 class="section-title">📷 CCTV & Networking</h2>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h3 class="service-title">Security Solutions</h3>
+                        <ul class="service-list">
+                            <li><i class="fas fa-check-circle"></i> CCTV Installation & Maintenance</li>
+                            <li><i class="fas fa-check-circle"></i> DVR / NVR Setup</li>
+                            <li><i class="fas fa-check-circle"></i> Remote Mobile Viewing Setup</li>
+                            <li><i class="fas fa-check-circle"></i> Office / Shop Networking</li>
+                            <li><i class="fas fa-check-circle"></i> WiFi Setup & Optimization</li>
+                            <li><i class="fas fa-check-circle"></i> Network Security Configuration</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h3 class="service-title">☁ IT & Business Support</h3>
+                        <ul class="service-list">
+                            <li><i class="fas fa-check-circle"></i> Annual Maintenance Contract (AMC)</li>
+                            <li><i class="fas fa-check-circle"></i> Office IT Support</li>
+                            <li><i class="fas fa-check-circle"></i> Data Recovery Services</li>
+                            <li><i class="fas fa-check-circle"></i> Cloud Backup Setup</li>
+                            <li><i class="fas fa-check-circle"></i> Printer Repair & Maintenance</li>
+                            <li><i class="fas fa-check-circle"></i> Server Setup & Management</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Extra Value Services -->
+            <section class="value-services">
+                <h2 class="section-title">🚚 Extra Value Services</h2>
+                <p style="text-align: center; margin-bottom: 2rem; font-size: 1.1rem;">Customer attract karne ke liye special services</p>
+                
+                <div class="value-grid">
+                    <div class="value-item">
+                        <i class="fas fa-home"></i>
+                        <h3>Home Visit Service</h3>
+                        <p>We come to your home or office for service</p>
+                    </div>
+                    
+                    <div class="value-item">
+                        <i class="fas fa-truck"></i>
+                        <h3>Pickup & Drop Facility</h3>
+                        <p>Free pickup and delivery of your devices</p>
+                    </div>
+                    
+                    <div class="value-item">
+                        <i class="fas fa-ambulance emergency-badge"></i>
+                        <h3>Emergency Repair <span class="badge emergency-badge">24/7</span></h3>
+                        <p>Urgent repair services available</p>
+                    </div>
+                    
+                    <div class="value-item">
+                        <i class="fas fa-stethoscope"></i>
+                        <h3>Free Diagnosis</h3>
+                        <p>Free checkup and problem identification</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Contact Section -->
+            <section id="contact-section" class="contact-section">
+                <h2 class="section-title">Contact Us</h2>
+                
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <h3 style="color: var(--primary); margin-bottom: 2rem;">Quick Contact</h3>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon phone-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <h4>Call Us</h4>
+                                <p style="font-size: 1.2rem; font-weight: bold;">+91 7387210710</p>
+                                <p style="font-size: 1.2rem; font-weight: bold;">+91 8766935124</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon whatsapp-icon">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <h4>WhatsApp</h4>
+                                <p>Quick support via WhatsApp</p>
+                                <a href="https://wa.me/917387210710" target="_blank" class="btn btn-whatsapp" style="margin-top: 10px; padding: 0.5rem 1rem;">
+                                    <i class="fab fa-whatsapp"></i> Chat Now
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4>Business Hours</h4>
+                                <p><strong>Mon-Sat:</strong> 8:00 AM - 9:00 PM</p>
+                                <p><strong>Sunday:</strong> 10:00 AM - 6:00 PM</p>
+                                <p><strong>Emergency:</strong> 24/7 Available</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-form">
+                        <h3 style="color: var(--primary); margin-bottom: 2rem;">Book Service Now</h3>
+                        <form id="serviceForm">
+                            <div class="form-group">
+                                <label for="name">Your Name *</label>
+                                <input type="text" id="name" required placeholder="Enter your name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" required placeholder="Enter your phone number">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="service">Select Service *</label>
+                                <select id="service" required>
+                                    <option value="">Choose a service</option>
+                                    <option value="laptop-repair">Laptop Repair</option>
+                                    <option value="desktop-repair">Desktop Repair</option>
+                                    <option value="virus-removal">Virus Removal</option>
+                                    <option value="data-recovery">Data Recovery</option>
+                                    <option value="cctv-installation">CCTV Installation</option>
+                                    <option value="gaming-pc">Gaming PC Assembly</option>
+                                    <option value="amc">Annual Maintenance Contract</option>
+                                    <option value="other">Other Service</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message">Problem Description</label>
+                                <textarea id="message" rows="4" placeholder="Describe your issue"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn" style="width: 100%;">
+                                <i class="fas fa-paper-plane"></i> Request Call Back
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Sales Tab -->
+    <div id="sales" class="tab-content">
+        <header class="header">
+            <h1>Sales & Accessories</h1>
+            <p class="header-tagline">Quality Products at Best Prices | ARN Computer Solution</p>
+        </header>
+        
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="#" onclick="switchTab('services')" class="logo-container">
+                    <div class="logo-main">ARN</div>
+                    <div class="logo-text">
+                        <i class="fas fa-laptop-code logo-icon"></i>
+                        COMPUTER SOLUTION
+                    </div>
+                </a>
+                <div class="nav-links">
+                    <a href="#" onclick="switchTab('services')">Services</a>
+                    <a href="#laptops-sales">Laptops</a>
+                    <a href="#accessories-sales">Accessories</a>
+                    <a href="#cctv-sales">CCTV</a>
+                    <a href="#gaming-sales">Gaming</a>
+                    <a href="#monitors-sales">Monitors</a>
+                    <a href="#contact-sales">Contact</a>
+                </div>
+            </div>
+        </nav>
+        
+        <main class="container">
+            <div class="page-header">
+                <h1 class="page-title">🖥️ Computer Sales & Accessories</h1>
+                <p class="page-subtitle">We offer high-quality new & refurbished computers, laptops, and all essential accessories at competitive prices. All products come with warranty and after-sales support.</p>
+            </div>
+            
+            <div class="categories">
+                <button class="category-btn active" onclick="filterProducts('all')">All Products</button>
+                <button class="category-btn" onclick="filterProducts('laptops')">Laptops & Computers</button>
+                <button class="category-btn" onclick="filterProducts('accessories')">Accessories</button>
+                <button class="category-btn" onclick="filterProducts('cctv')">CCTV Systems</button>
+                <button class="category-btn" onclick="filterProducts('gaming')">Gaming</button>
+                <button class="category-btn" onclick="filterProducts('monitors')">Monitors</button>
+            </div>
+            
+            <div id="products-container" class="products-grid">
+                <!-- Product 1: EVM 19" Monitor -->
+                <div class="product-card" data-category="monitors">
+                    <div class="product-image" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);">
+                        <i class="fas fa-desktop" style="color: white; font-size: 4rem;"></i>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Monitor</span>
+                        <h3 class="product-title">EVM 19" LED Monitor</h3>
+                        <p class="product-description">19 Inch HD LED Monitor with HDMI & VGA Ports, Perfect for Home & Office Use</p>
+                        <div class="product-price">₹2,700 <span class="stock-badge hot-deal">Hot Deal</span></div>
+                        
+                        <table class="specs-table">
+                            <tr>
+                                <td>Monitor Size:</td>
+                                <td>19 Inch (18.5" Viewable)</td>
+                            </tr>
+                            <tr>
+                                <td>Resolution:</td>
+                                <td>1366 x 768 HD</td>
+                            </tr>
+                            <tr>
+                                <td>Display Type:</td>
+                                <td>LED, True Pixel</td>
+                            </tr>
+                            <tr>
+                                <td>Brand:</td>
+                                <td>MIRRANNE</td>
+                            </tr>
+                            <tr>
+                                <td>Ports:</td>
+                                <td>HDMI + VGA</td>
+                            </tr>
+                            <tr>
+                                <td>Response Time:</td>
+                                <td>Fast Response</td>
+                            </tr>
+                        </table>
+                        
+                        <ul class="product-features">
+                            <li><i class="fas fa-check"></i> HD Display (1366x768)</li>
+                            <li><i class="fas fa-check"></i> HDMI & VGA Ports</li>
+                            <li><i class="fas fa-check"></i> Energy Efficient</li>
+                            <li><i class="fas fa-check"></i> Wall Mountable</li>
+                            <li><i class="fas fa-check"></i> 1 Year Warranty</li>
+                        </ul>
+                        <div class="product-actions">
+                            <a href="https://wa.me/917387210710?text=Hi! I'm interested in EVM 19' Monitor - ₹2,700" target="_blank" class="btn btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i> Enquire
+                            </a>
+                            <a href="tel:+917387210710" class="btn btn-call">
+                                <i class="fas fa-phone"></i> Call
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2: Laptop -->
+                <div class="product-card" data-category="laptops">
+                    <div class="product-image">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Laptops</span>
+                        <h3 class="product-title">HP Pavilion Laptop</h3>
+                        <p class="product-description">15.6" FHD Display, Intel Core i5, 8GB RAM, 512GB SSD, Windows 11</p>
+                        <div class="product-price">₹42,999</div>
+                        <ul class="product-features">
+                            <li><i class="fas fa-check"></i> 1 Year Warranty</li>
+                            <li><i class="fas fa-check"></i> Free Bag & Mouse</li>
+                            <li><i class="fas fa-check"></i> Installation Support</li>
+                        </ul>
+                        <div class="product-actions">
+                            <a href="https://wa.me/917387210710?text=Hi! I'm interested in HP Pavilion Laptop - ₹42,999" target="_blank" class="btn btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i> Enquire
+                            </a>
+                            <a href="tel:+917387210710" class="btn btn-call">
+                                <i class="fas fa-phone"></i> Call
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3: Desktop Computer -->
+                <div class="product-card" data-category="laptops">
+                    <div class="product-image">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Desktop</span>
+                        <h3 class="product-title">Gaming Desktop PC</h3>
+                        <p class="product-description">Intel Core i7, 16GB RAM, 1TB HDD + 256GB SSD, NVIDIA GTX 1660</p>
+                        <div class="product-price">₹65,999</div>
+                        <ul class="product-features">
+                            <li><i class="fas fa-check"></i> RGB Gaming Cabinet</li>
+                            <li><i class="fas fa-check"></i> 2 Years Warranty</li>
+                            <li><i class="fas fa-check"></i> Free Assembly</li>
+                        </ul>
+                        <div class="product-actions">
+                            <a href="https://wa.me/917387210710?text=Hi! I'm interested in Gaming Desktop PC - ₹65,999" target="_blank" class="btn btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i> Enquire
+                            </a>
+                            <a href="tel:+917387210710" class="btn btn-call">
+                                <i class="fas fa-phone"></i> Call
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4: Refurbished Laptop -->
+                <div class="product-card" data-category="laptops">
+                    <div class="product-image">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Refurbished</span>
+                        <h3 class="product-title">Dell Refurbished Laptop</h3>
+                        <p class="product-description">14" Display, Intel i3, 4GB RAM, 256GB SSD, Windows 10 (Like New)</p>
+                        <div class="product-price">₹18,999 <span class="stock-badge">Best Deal</span></div>
+                        <ul class="product-features">
+                            <li><i class="fas fa-check"></i> 6 Months Warranty</li>
+                            <li><i class="fas fa-check"></i> Professional Serviced</li>
+                            <li><i class="fas fa-check"></i> Battery Health 85%+</li>
+                        </ul>
+                        <div class="product-actions">
+                            <a href="https://wa.me/917387210710?text=Hi! I'm interested in Dell Refurbished Laptop - ₹18,999" target="_blank" class="btn btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i> Enquire
+                            </a>
+                            <a href="tel:+917387210710" class="btn btn-call">
+                                <i class="fas fa-phone"></i> Call
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 5: Printer -->
+                <div class="product-card" data-category="accessories">
+                    <div class="product-image">
+                        <i class="fas fa-print"></i>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Printer</span>
+                        <h3 class="product-title">HP Deskjet Printer</h3>
+                        <p class="product-description">All-in-One Wireless Printer, Scan, Copy, Print, WiFi & USB Connectivity</p>
+                        <div class="product-price">₹8,499</div>
+                        <ul class="product-features">
+                            <li><i class="fas fa-check"></i> Wireless Printing</li>
+                            <li><i class="fas fa-check"></i> 1 Year Warranty</li>
+                            <li><i class="fas fa-check"></i> Free Installation</li>
+                        </ul>
+                        <div class="product-actions">
+                            <a href="https://wa.me/917387210710?text=Hi! I'm interested in HP Deskjet Printer - ₹8,499" target="_blank" class="btn btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i> Enquire
+                            </a>
+                            <a href="tel:+917387210710" class="btn btn-call">
+                                <i class="fas fa-phone"></i> Call
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 6: Wireless Keyboard & Mouse -->
+                <div class="product-card" data-category="accessories">
+                    <div class="product-image">
+                        <i class="fas fa-keyboard"></i>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Accessories</span>
+                        <h3 class="product-title">Wireless Combo</h3>
+                        <p class="product-description">Wireless Keyboard & Mouse Combo, 2.4GHz Receiver, Long Battery Life</p>
+                        <div class="product-price">₹1,299</div>
+                        <ul class="product-features">
+                            <li><i class="fas fa-check"></i> Plug & Play</li>
+                            <li><i class="fas fa-check"></i> 6 Months Warranty</li>
+                            <li><i class="fas fa-check"></i> Ergonomic Design</li>
+                        </ul>
+                        <div class="product-actions">
+                            <a href="https://wa.me/917387210710?text=Hi! I'm interested in Wireless Combo - ₹1,299" target="_blank" class="btn btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i> Enquire
+                            </a>
+                            <a href="tel:+917387210710" class="btn btn-call">
+                                <i class="fas fa-phone"></i> Call
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 7: UPS -->
+                <div class="product-card" data-category="accessories">
+                    <div class="product-image">
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">UPS</span>
+                        <h3 class="product-title">APC UPS 1100VA</h3>
+                        <p class="product-description">1100VA/660W UPS, Line Interactive, 6 Output Sockets, Voltage Protection</p>
+                        <div class="product-price">₹5,999</div>
+                        <ul class="product-features">
+                            <li><i class="fas fa-check"></i> 2 Years Warranty</li>
+                            <li><i class="fas fa-check"></i> Automatic Voltage Regulator</li>
+                            <li><i class="fas fa-check"></i> 20-25 Min Backup</li>
+                        </ul>
+                        <div class="product-actions">
+                            <a href="https://wa.me/917387210710?text=Hi! I'm interested in APC UPS 1100VA - ₹5,999" target="_blank" class="btn btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i> Enquire
+                            </a>
+                            <a href="tel:+917387210710" class="btn btn-call">
+                                <i class="fas fa-phone"></i> Call
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 8: WiFi Router -->
+                <div class="product-card" data-category="accessories">
+                    <div class="product-image">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Networking</span>
+                        <h3 class="product-title">TP-Link WiFi Router</h3>
+                        <p class="product-description">Dual Band WiFi Router, 1200Mbps, 4 Antennas, Parental Controls</p>
+                        <div class="product-price">₹2,199</div>
+                        <ul class="product-features">
+                            <li><i class="fas fa-check"></i> 2 Years Warranty</li>
+                            <li><i class="fas fa-check"></i> Easy Setup</li>
+                            <li><i class="fas fa-check"></i> Free Installation</li>
+                        </ul>
+                        <div class="product-actions">
+                            <a href="https://wa.me/917387210710?text=Hi! I'm interested in TP-Link WiFi Router - ₹2,199" target="_blank" class="btn btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i> Enquire
+                            </a>
+                            <a href="tel:+917387210710" class="btn btn-call">
+                                <i class="fas fa-phone"></i> Call
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 9: CCTV Camera -->
+                <div class="product-card" data-category="cctv">
+                    <div class="product-image">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">CCTV</span>
+                        <h3 class="product-title">HD CCTV Camera Kit</h3>
+                        <p class="product-description">4 Camera Kit with DVR, 1080p HD, Night Vision, Mobile Viewing</p>
+                        <div class="product-price">₹14,999</div>
+                        <ul class="product-features">
+                            <li><i class="fas fa-check"></i> Free Installation</li>
+                            <li><i class="fas fa-check"></i> 1 Year Warranty</li>
+                            <li><i class="fas fa-check"></i> Mobile App Setup</li>
+                        </ul>
+                        <div class="product-actions">
+                            <a href="https://wa.me/917387210710?text=Hi! I'm interested in HD CCTV Camera Kit - ₹14,999" target="_blank" class="btn btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i> Enquire
+                            </a>
+                            <a href="tel:+917387210710" class="btn btn-call">
+                                <i class="fas fa-phone"></i> Call
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 10: Gaming Mouse -->
+                <div class="product-card" data-category="gaming">
+                    <div class="product-image">
+                        <i class="fas fa-mouse"></i>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Gaming</span>
+                        <h3 class="product-title">RGB Gaming Mouse</h3>
+                        <p class="product-description">Programmable RGB Gaming Mouse, 6400 DPI, 7 Buttons, Braided Cable</p>
+                        <div class="product-price">₹1,599</div>
+                        <ul class="product-features">
+                            <li><i class="fas fa-check"></i> RGB Lighting Effects</li>
+                            <li><i class="fas fa-check"></i> 1 Year Warranty</li>
+                            <li><i class="fas fa-check"></i> Ergonomic Design</li>
+                        </ul>
+                        <div class="product-actions">
+                            <a href="https://wa.me/917387210710?text=Hi! I'm interested in RGB Gaming Mouse - ₹1,599" target="_blank" class="btn btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i> Enquire
+                            </a>
+                            <a href="tel:+917387210710" class="btn btn-call">
+                                <i class="fas fa-phone"></i> Call
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 11: SSD -->
+                <div class="product-card" data-category="accessories">
+                    <div class="product-image">
+                        <i class="fas fa-hdd"></i>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Storage</span>
+                        <h3 class="product-title">SSD 500GB</h3>
+                        <p class="product-description">500GB SATA SSD, Read Speed 550MB/s, Write Speed 520MB/s, 3 Years Warranty</p>
+                        <div class="product-price">₹3,499</div>
+                        <ul class="product-features">
+                            <li><i class="fas fa-check"></i> 3 Years Warranty</li>
+                            <li><i class="fas fa-check"></i> Free Installation</li>
+                            <li><i class="fas fa-check"></i> Data Migration Service</li>
+                        </ul>
+                        <div class="product-actions">
+                            <a href="https://wa.me/917387210710?text=Hi! I'm interested in SSD 500GB - ₹3,499" target="_blank" class="btn btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i> Enquire
+                            </a>
+                            <a href="tel:+917387210710" class="btn btn-call">
+                                <i class="fas fa-phone"></i> Call
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 12: RAM -->
+                <div class="product-card" data-category="accessories">
+                    <div class="product-image">
+                        <i class="fas fa-memory"></i>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Memory</span>
+                        <h3 class="product-title">8GB DDR4 RAM</h3>
+                        <p class="product-description">8GB DDR4 3200MHz RAM, Lifetime Warranty, Compatible with All Systems</p>
+                        <div class="product-price">₹2,199</div>
+                        <ul class="product-features">
+                            <li><i class="fas fa-check"></i> Lifetime Warranty</li>
+                            <li><i class="fas fa-check"></i> Free Installation</li>
+                            <li><i class="fas fa-check"></i> Performance Boost</li>
+                        </ul>
+                        <div class="product-actions">
+                            <a href="https://wa.me/917387210710?text=Hi! I'm interested in 8GB DDR4 RAM - ₹2,199" target="_blank" class="btn btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i> Enquire
+                            </a>
+                            <a href="tel:+917387210710" class="btn btn-call">
+                                <i class="fas fa-phone"></i> Call
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 13: External HDD -->
+                <div class="product-card" data-category="accessories">
+                    <div class="product-image">
+                        <i class="fas fa-hdd"></i>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Storage</span>
+                        <h3 class="product-title">1TB External HDD</h3>
+                        <p class="product-description">1TB Portable External Hard Drive, USB 3.0, Plug & Play, Data Backup Solution</p>
+                        <div class="product-price">₹3,999</div>
+                        <ul class="product-features">
+                            <li><i class="fas fa-check"></i> 3 Years Warranty</li>
+                            <li><i class="fas fa-check"></i> Portable Design</li>
+                            <li><i class="fas fa-check"></i> Data Backup Service</li>
+                        </ul>
+                        <div class="product-actions">
+                            <a href="https://wa.me/917387210710?text=Hi! I'm interested in 1TB External HDD - ₹3,999" target="_blank" class="btn btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i> Enquire
+                            </a>
+                            <a href="tel:+917387210710" class="btn btn-call">
+                                <i class="fas fa-phone"></i> Call
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-section">
+                <h2 style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;">Need Custom Configuration?</h2>
+                <p style="font-size: 1.1rem; margin-bottom: 2rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+                    We can customize computers and accessories according to your specific requirements and budget. Contact us for bulk orders, corporate purchases, or special configurations.
+                </p>
+                
+                <div class="sales-contact-info">
+                    <div class="sales-contact-item">
+                        <div class="sales-contact-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <h3>WhatsApp</h3>
+                        <p>Quick Product Enquiry</p>
+                        <a href="https://wa.me/917387210710" target="_blank" class="btn btn-whatsapp">
+                            <i class="fab fa-whatsapp"></i> Chat Now
+                        </a>
+                    </div>
+                    
+                    <div class="sales-contact-item">
+                        <div class="sales-contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <h3>Call Now</h3>
+                        <p>Direct Purchase</p>
+                        <a href="tel:+917387210710" class="btn btn-call">
+                            <i class="fas fa-phone-alt"></i> 7387210710
+                        </a>
+                    </div>
+                    
+                    <div class="sales-contact-item">
+                        <div class="sales-contact-icon">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <h3>Visit Us</h3>
+                        <p>See Products in Person</p>
+                        <a href="https://wa.me/917387210710?text=Hi! I want to visit your shop. Please share location." target="_blank" class="btn">
+                            <i class="fas fa-map-marker-alt"></i> Get Location
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="back-home" style="text-align: center; margin: 3rem 0;">
+                <a href="#" onclick="switchTab('services')" class="btn" style="padding: 1rem 2rem; font-size: 1.1rem;">
+                    <i class="fas fa-arrow-left"></i> Back to Services
+                </a>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Common Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 style="font-size: 1.8rem; color: white; margin-bottom: 1rem;">
+                    <span style="color: var(--primary); font-weight: 800;">ARN</span> 
+                    <span style="font-weight: 600;">Computer Solution</span>
+                </h3>
+                <p>Your trusted partner for all computer and IT services. Professional, reliable, and affordable solutions.</p>
+                <div class="social-links">
+                    <a href="https://wa.me/917387210710" class="social-link" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="tel:+917387210710" class="social-link">
+                        <i class="fas fa-phone-alt"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="switchTab('services')">Services</a></li>
+                    <li><a href="#" onclick="switchTab('sales')">Sales & Accessories</a></li>
+                    <li><a href="#" onclick="switchTab('services') && document.getElementById('gaming-section').scrollIntoView()">Gaming PC</a></li>
+                    <li><a href="#" onclick="switchTab('services') && document.getElementById('cctv-section').scrollIntoView()">CCTV & Network</a></li>
+                    <li><a href="#" onclick="switchTab('services') && document.getElementById('contact-section').scrollIntoView()">Contact Us</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Our Services</h3>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="switchTab('services'); openRepairModal()">Laptop Repair</a></li>
+                    <li><a href="#" onclick="switchTab('services'); openRepairModal()">Data Recovery</a></li>
+                    <li><a href="#" onclick="switchTab('services')">CCTV Installation</a></li>
+                    <li><a href="#" onclick="switchTab('services')">Network Setup</a></li>
+                    <li><a href="#" onclick="switchTab('services')">AMC Services</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-phone"></i> +91 7387210710</p>
+                <p><i class="fab fa-whatsapp"></i> +91 8766935124</p>
+                <p><i class="fas fa-envelope"></i> service@arncomputersolution.com</p>
+                <p><i class="fas fa-clock"></i> Mon-Sat: 8AM-9PM</p>
+                <p><i class="fas fa-map-marker-alt"></i> Serving All Areas</p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>© 2024 <strong>ARN Computer Solution</strong>. All Rights Reserved. | Computer Repair & IT Services</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">Home Visit • Free Diagnosis • Emergency Services Available</p>
+        </div>
+    </footer>
+
+    <script>
+        // Repair Photos Modal Functions
+        function openRepairModal() {
+            document.getElementById('repairModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeRepairModal() {
+            document.getElementById('repairModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('repairModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeRepairModal();
+            }
+        });
+        
+        // Tab switching function
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab button
+            document.querySelector(`.tab-btn[data-tab="${tabName}"]`).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // Tab button click event
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tabName = this.getAttribute('data-tab');
+                switchTab(tabName);
+            });
+        });
+        
+        // Service form submission
+        document.getElementById('serviceForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const service = document.getElementById('service').value;
+            const message = document.getElementById('message').value;
+            
+            // Create WhatsApp message
+            const whatsappMessage = `Hello ARN Computer Solution! I need service booking:\n\n👤 Name: ${name}\n📱 Phone: ${phone}\n🔧 Service: ${service}\n📝 Problem: ${message}\n\nPlease contact me.`;
+            const encodedMessage = encodeURIComponent(whatsappMessage);
+            
+            // Send via WhatsApp
+            window.open(`https://wa.me/917387210710?text=${encodedMessage}`, '_blank');
+            
+            // Reset form
+            this.reset();
+            
+            // Show confirmation
+            alert(`Thank you ${name}! Your service request has been sent to ARN Computer Solution. We will call you shortly.`);
+        });
+        
+        // Product filtering function
+        function filterProducts(category) {
+            const products = document.querySelectorAll('.product-card');
+            const buttons = document.querySelectorAll('.category-btn');
+            
+            // Update active button
+            buttons.forEach(btn => {
+                if(btn.textContent.toLowerCase().includes(category) || (category === 'all' && btn.textContent.includes('All Products'))) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Show/hide products
+            products.forEach(product => {
+                if(category === 'all' || product.dataset.category === category) {
+                    product.style.display = 'block';
+                    setTimeout(() => {
+                        product.style.opacity = '1';
+                        product.style.transform = 'translateY(0)';
+                    }, 10);
+                } else {
+                    product.style.opacity = '0';
+                    product.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        product.style.display = 'none';
+                    }, 300);
+                }
+            });
+        }
+        
+        // Initialize all products as visible
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize product animations
+            const products = document.querySelectorAll('.product-card');
+            products.forEach(product => {
+                product.style.opacity = '0';
+                product.style.transform = 'translateY(30px)';
+                product.style.transition = 'opacity 0.6s, transform 0.6s';
+                
+                setTimeout(() => {
+                    product.style.opacity = '1';
+                    product.style.transform = 'translateY(0)';
+                }, 100);
+            });
+            
+            // Service cards animation
+            const observerOptions = {
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe all service cards
+            document.querySelectorAll('.service-card, .value-item').forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(30px)';
+                item.style.transition = 'opacity 0.6s, transform 0.6s';
+                observer.observe(item);
+            });
+            
+            // Add logo animation
+            const logoBanner = document.querySelector('.logo-banner-main');
+            if(logoBanner) {
+                logoBanner.style.opacity = '0';
+                logoBanner.style.transform = 'scale(0.8)';
+                logoBanner.style.transition = 'opacity 1s, transform 1s';
+                
+                setTimeout(() => {
+                    logoBanner.style.opacity = '1';
+                    logoBanner.style.transform = 'scale(1)';
+                }, 500);
+            }
+            
+            // Emergency button animation
+            const emergencyBadge = document.querySelector('.emergency-badge');
+            if(emergencyBadge) {
+                setInterval(() => {
+                    emergencyBadge.style.animation = 'none';
+                    setTimeout(() => {
+                        emergencyBadge.style.animation = 'pulse 2s infinite';
+                    }, 10);
+                }, 4000);
+            }
+            
+            // Hot deal animation for monitor
+            const hotDealBadge = document.querySelector('.hot-deal');
+            if(hotDealBadge) {
+                setInterval(() => {
+                    hotDealBadge.style.animation = 'none';
+                    setTimeout(() => {
+                        hotDealBadge.style.animation = 'pulse 1.5s infinite';
+                    }, 10);
+                }, 3000);
+            }
+            
+            // Add glow effect to logo banner
+            const glowElement = document.querySelector('.glow-effect');
+            if(glowElement) {
+                setInterval(() => {
+                    glowElement.style.animation = 'none';
+                    setTimeout(() => {
+                        glowElement.style.animation = 'glow 3s infinite';
+                    }, 10);
+                }, 6000);
+            }
+            
+            // Make repair card clickable
+            const repairCard = document.querySelector('.service-card[onclick]');
+            if(repairCard) {
+                repairCard.style.cursor = 'pointer';
+            }
+            
+            // Gallery items animation
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'opacity 0.6s, transform 0.6s';
+                
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, 200);
+            });
+        });
+        
+        // Smooth scrolling for navigation links within tabs
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId !== '#') {
+                    document.querySelector(targetId).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // WhatsApp button tracking
+        document.querySelectorAll('a[href*="whatsapp"]').forEach(link => {
+            link.addEventListener('click', function() {
+                console.log('ARN Computer Solution - WhatsApp button clicked');
+            });
+        });
+        
+        // View repair photos button
+        document.querySelectorAll('.btn-view-photos').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                openRepairModal();
+            });
+        });
+    </script>
+</body>
+</html>
